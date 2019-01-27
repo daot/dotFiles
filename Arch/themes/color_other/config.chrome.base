@@ -1,0 +1,8 @@
+:root {
+    --main-color: #COLOR4;
+    --main-background: #COLOR0;
+    --second-background: #COLOR8;
+    --hover-background: #COLOR1;
+    --main-text: #COLOR4;
+    --dimer-text: #CCCCCC;
+}

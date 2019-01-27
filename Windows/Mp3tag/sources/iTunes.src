@@ -1,0 +1,121 @@
+#################################################################################################
+#                         iTunes Web Sources Script for Mp3Tag                                  #
+#                                                                                               #
+#                                 Update 14 Release 3                                           #
+#         created by pone and improved by JonaaaBR and amine in September 2015                  #
+#################################################################################################
+
+
+########################################################
+#          SEARCH BY DIALOG                            #
+########################################################
+[Name]=iTunes
+[BasedOn]=https://itunes.apple.com
+[IndexUrl]=https://itunes.apple.com/search?country=US&entity=album&term=%s
+[AlbumUrl]=https://itunes.apple.com/lookup?country=US&entity=song&limit=200&id=
+[WordSeperator]=+
+[IndexFormat]=%_preview%|%_url%|%Artist%|%Album%|%Explicitness%|%Year%|%Tracks%|%Copyright%|
+[SearchBy]=%artist% %album%
+[Encoding]=url-utf-8
+
+########################################################
+#          LIST OF SEARCH RESULTS DIALOG               #
+########################################################
+[ParserScriptIndex]=...
+findline "wrapperType\""
+
+do
+	joinuntil "}"
+              replace "\\\"" "&quot;"
+	      replace "?uo=4" ""	  
+
+	# PREVIEW
+	FindLine "\"collectionViewUrl\":\""
+	FindInLine "\"collectionViewUrl\":\""
+	SayUntil "\", \""
+	say "|"
+
+	# URL
+	FindLine "\"collectionId\":"
+	FindInLine "\"collectionId\":"
+	SayUntil ", \""
+	say "&entity=song&limit=200"
+	say "|"
+
+	# ARTIST
+	FindLine "\"artistName\":\""
+	FindInLine "\"artistName\":\""
+	SayUntil "\", \""
+	Say "|"
+
+	# ALBUM
+	FindLine "\"collectionCensoredName\":\""
+	FindInLine "\"collectionCensoredName\":\""
+	SayUntil "\", \""
+	say "|"
+
+	# EXPLICITNESS
+	replace "notExplicit" "Not Explicit"
+	replace "explicit" "Explicit"
+	replace "cleaned" "Cleaned"
+	FindLine "\"collectionExplicitness\":\""
+	FindInLine "\"collectionExplicitness\":\""
+	SayUntil "\", \""
+	Say "|"
+
+        # YEAR
+	FindLine "\"releaseDate\":\""
+	FindInLine "\"releaseDate\":\""
+	SayUntil "-"
+	Say "|"
+
+	# TRACKS
+	FindLine "\"trackCount\":"
+	FindInLine "\"trackCount\":"
+	SayUntil ", \""
+	Say "|"
+
+	# COPYRIGHT
+	FindLine "\"copyright\":\""
+	FindInLine "\"copyright\":\""
+	SayUntil "\", \""
+	say "|"
+
+	saynewline
+	findline "wrapperType\"" 2 1
+while "{\"wrapperType" 201
+
+########################################################
+#          ADJUST TAG INFORMATION DIALOG               #
+########################################################
+[ParserScriptAlbum]=...
+
+findline "wrapperType\""
+joinuntil "}"
+replace "\\\"" "&quot;"
+replace "?uo=4" ""
+
+outputto "COVERURL"
+replace "100x100bb" "100000x100000-999"
+FindLine "\"artworkUrl100\":\""
+FindInLine "\"artworkUrl100\":\""
+SayUntil "\", \""
+
+# TRACK LOOP
+findline "wrapperType\"" 2 1
+do
+	joinuntil "}"
+              replace "\\\"" "&quot;"
+	      replace "?uo=4" ""
+
+	outputto "ITUNESADVISORY"
+	replace "notExplicit" "0"
+	replace "cleaned" "2"
+	replace "explicit" "1"
+	FindLine "\"trackExplicitness\":\""
+	FindInLine "\"trackExplicitness\":\""
+	SayUntil "\", \""
+	Say "|"
+
+	findline "wrapperType\"" 2 1
+while "{\"wrapperType"

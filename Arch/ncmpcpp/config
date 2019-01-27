@@ -1,0 +1,46 @@
+mpd_music_dir = "/mnt/honeycrisp/Music/Artists/"
+
+# Song Format
+
+song_list_format = "{$6%a$9} $2|$9 {$7%t$9} $R $2|$9 {$2%b$9} $2|$9 {$6%l$9}"
+song_library_format = "{%n - }{%t}|{%f}"
+song_status_format = "$b{$6%a$9 $1|$9 } {$7%t$9} $1|$9 {$2%b$9} $1|$9 {$6%y$9} $1|$9"
+song_window_title_format = "{%b}"
+
+# Columns settings
+
+song_columns_list_format = "(6)[magenta]{l} (30)[red]{a} (30)[blue]{b} (53)[magenta]{t}"
+
+# Misc 
+
+playlist_display_mode = "classic"
+titles_visibility="no"
+browser_display_mode = "columns"
+incremental_seeking = "yes"
+autocenter_mode = "yes"
+header_visibility = "no"
+statusbar_visibility = "yes"
+cyclic_scrolling = "yes"
+display_bitrate= "yes"
+ignore_leading_the = "yes"
+enable_window_title = "yes"
+progressbar_look = "·· "
+
+# Interface
+
+user_interface="classic"
+alternative_header_first_line_format ="{$b$6%a$9} $1««$9 {$6%t$9}"
+alternative_header_second_line_format ="{$5%b$9} $1»»$9 {$5(%y)$9}"
+alternative_ui_separator_color ="black"
+playlist_separate_albums = "no"
+
+visualizer_fifo_path = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+visualizer_sync_interval = "60" 
+visualizer_in_stereo = "no"
+visualizer_type = "spectrum" (spectrum/wave)
+visualizer_look = "▮▮"
+
+media_library_primary_tag = album_artist
+startup_screen = "playlist"
+startup_slave_screen = "media_library"

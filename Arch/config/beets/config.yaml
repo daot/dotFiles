@@ -1,0 +1,66 @@
+plugins: lyrics missing zero bandcamp discogs inline scrub hook duplicates
+
+directory: /mnt/honeycrisp/Music/PreAlbums
+
+import:
+    write: yes
+    copy: no
+    move: yes
+
+clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", ".pls", "*.jpg", "*.png"]
+
+ignore: [".*", "*~", "System Volume Information"]
+
+threaded: yes
+
+timeout: 5.0
+
+original_date: yes
+
+replace:
+    '[\\/]': _
+    ^\.: _
+    '[\x00-\x1f]': _
+    '[<>:"\?\*\|]': _
+    \.$: _
+    \s+$: ''
+    ^\s+: ''
+
+album_fields:
+    format_name_probably: |
+        if items[0].format in ("mp3", "Mp3", "MP3"):
+            total_bitrate = 0
+            for item in items:
+                total_bitrate += item.bitrate
+            average_bitrate = total_bitrate / len(items) / 1000
+            if average_bitrate == 320:
+                return "320"
+            elif average_bitrate >= 200:
+                return "V0"
+            elif average_bitrate == 192:
+                return "192"
+            elif average_bitrate == 160:
+                return "160"
+            elif average_bitrate == 128:
+                return "128"
+            else:
+                return "TOO LOW FIND NEW SOURCE"
+        else:
+            return items[0].format
+
+paths:
+    default: $albumartist/$album ($year) [%if{$bitdepth,$format,$format $format_name_probably}]/$track. $title
+    singleton:  $albumartist/$title ($year) [%if{$bitdepth,$format,$format $format_name_probably}]/$title
+    comp: Various Artists/$album ($year) [%if{$bitdepth,$format,$format $format_name_probably}]/$track. $artist - $title
+
+zero:
+    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory images art
+
+bandcamp:
+    lyrics: true
+    art: false
+
+hook:
+  hooks:
+    - event: write
+      command: echo Writingï¼ {item}

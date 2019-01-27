@@ -1,0 +1,42 @@
+#!/bin/bash
+#search-for-files
+
+# change this figure to suit yourself - I find zenity dies from about 1000 results but YMMV
+maxresults=500
+
+# again, change the path to the icon to suit yourself. But who doesn't like tango?
+window_icon="/usr/share/icons/Tango/scalable/actions/search.svg"
+
+# this script will work for any environment that has bash and zenity, so the filemanager is entirely down to you! you can add extra arguments to the string as long as the last argument is the path of the folder you open
+filemanager="thunar"
+
+window_title="Search for Files"
+
+srcPath="$*"
+
+if ! [ -d "$srcPath" ] ; then
+cd ~/
+srcPath=`zenity --file-selection --directory --title="$window_title - Look in folder" --window-icon="$window_icon"`
+fi
+
+if [ -d "$srcPath" ] ; then
+
+fragment=`zenity --entry --title="$window_title - Name contains:" --window-icon="$window_icon" --text="Search strings less than 2 characters are ignored"`
+if ! [ ${#fragment} -lt 2 ] ; then
+
+(
+
+echo 10
+O=$IFS IFS=$'\n' files=( `find "$srcPath" -iname "*$fragment*" -printf \"%Y\"\ \"%f\"\ \"%k\ KB\"\ \"%t\"\ \"%h\"\\\n | head -n $maxresults` ) IFS=$O
+echo 100
+
+selected=`eval zenity --list --title=\"${#files[@]} Files Found - $window_title\" --window-icon="$window_icon" --width="600" --height="400" --text=\"Search results:\" --print-column=5 --column \"Type\" --column \"Name\" --column \"Size\" --column \"Date modified\" --column \"Path\" ${files[@]}`
+if [ -e "$selected" ] ; then "$filemanager" "$selected" ; fi
+
+) | zenity --progress --auto-close --pulsate --title="Searching..." --window-icon="$window_icon" --text="Searching for \"$fragment\""
+
+fi
+
+fi
+
+exit

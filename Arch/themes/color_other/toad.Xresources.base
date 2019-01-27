@@ -1,0 +1,19 @@
+rofi.color-enabled: true
+rofi.color-window: #COLOR0, #COLOR4, #COLOR0
+rofi.color-normal: #COLOR0, #COLOR4, #COLOR0, #COLOR4, #COLOR0
+rofi.color-active: #COLOR0, #COLOR4, #COLOR0, #COLOR4, #COLOR4
+rofi.color-urgent: #COLOR0, #COLOR4, #COLOR0, #394249, #COLOR4
+rofi.font: ypn envypn 11
+rofi.padding: 3
+rofi.lines: 5
+rofi.borderwidth: 3
+rofi.width: 400
+rofi.bw: 3 
+
+*background: #COLOR0
+*foreground: #COLOR4
+
+URxvt.url-launcher: /usr/bin/chromium
+URxvt.scrollBar: false
+URxvt*font: xft:ypn envypn:size=11
+URxvt.letterSpace: -1

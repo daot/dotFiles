@@ -1,0 +1,83 @@
+# Mp3tag (2.36 or higher) Parsing for allmusic.com by sigloiv
+# Save it in your Mp3tag data directory, 
+# e.g. C:\Documents and Settings\*username*\Application Data\Mp3tag\data\sources
+#
+# Based off AMG scripts by dano and sigloiv; they are both long outdated, but they served as great educational tools for me.  Much thanks to both of them.  Also, thanks to Florian for creating the best tool for music tagging by far.
+#
+# Note: If you need to change the tag values this script outputs, just go to the "A L B U M" section, look at the "value" of outputto and change it to whatever that suits your needs.  For example, the line: outputto "BANDCAMP_URL" can be changed to: outputto "WWW"
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+#
+# v0.04 ms6676749 @ MP3Tag
+#
+
+[Name]=Bandcamp
+[BasedOn]=www.bandcamp.com
+[IndexUrl]=https://bandcamp.com/search?q=%s
+[AlbumUrl]=
+[WordSeperator]=+
+[IndexFormat]=%type%|%_url%|%Album%|%Artist%|%Date%
+[SearchBy]=$regexp(%album%,'\s+\[.+\]$',,1)
+[Encoding]=url-utf-8
+
+[ParserScriptIndex]=...
+# ###################################################################
+#					I  N  D  E  X
+# ###################################################################
+
+#debug "on" "D:\MP3Tag-debug_INDEX.log"
+
+findline "<li class=\"searchresult album"
+do	
+	# Type
+		findinline  "<li class=\"searchresult "
+		sayuntil "\">"
+		say "|"	
+	# Url
+		findline "href=\""
+		findinline "href=\""
+		sayuntil "?from="
+		say "|"	
+	# Album
+		findline "<div class=\"heading\">"
+		moveline 2
+		unspace
+		sayrest
+		say "|"
+	# Artist
+		findline "<div class=\"subhead\">"
+		findline "by "
+		unspace
+		findinline "by "
+		sayrest
+		say "|"
+	# Release Date
+		findline "<div class=\"released\">"
+		moveline 1
+		unspace
+		findinline "released "
+		sayrest
+	# Loop
+		saynewline
+		findline "<li class=\"searchresult album" 1 1
+		unspace
+while "<li"
+
+[ParserScriptAlbum]=...
+# ###################################################################
+#					A  L  B  U  M
+# ###################################################################
+
+# debug "on" "D:\MP3Tag-WSS_AlbumParser.log"
+
+# Coverart
+outputto "COVERURL"
+findline "<div id=\"tralbumArt" 1 1
+findline "<a class=\"popupImage" 1 1
+unspace
+say "http"
+sayregexp "(?<=href\=\"https)[^>]+(?=\">)"
+
+# Comment out "#" any of the lines below to leave the field blank
+
+#set "PUBLISHER" "[Self-Released]"
