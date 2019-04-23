@@ -1,4 +1,4 @@
-plugins: lyrics missing zero bandcamp discogs inline hook duplicates lastimport permissions badfiles
+plugins: lyrics missing zero bandcamp discogs inline hook duplicates permissions badfiles
 
 directory: /mnt/honeycrisp/Music/PreAlbums
 
@@ -17,15 +17,9 @@ timeout: 5.0
 
 original_date: yes
 
-lastfm:
-    user: toad
-
 permissions:
     file: 644
     dir: 755
-    
-lastgenre:
-    count: 5
 
 replace:
     '[\\/]': _
