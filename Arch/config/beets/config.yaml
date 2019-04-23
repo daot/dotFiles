@@ -1,4 +1,4 @@
-plugins: lyrics missing zero bandcamp discogs inline scrub hook duplicates
+plugins: lyrics missing zero bandcamp discogs inline hook duplicates lastimport permissions badfiles
 
 directory: /mnt/honeycrisp/Music/PreAlbums
 
@@ -17,6 +17,16 @@ timeout: 5.0
 
 original_date: yes
 
+lastfm:
+    user: toad
+
+permissions:
+    file: 644
+    dir: 755
+    
+lastgenre:
+    count: 5
+
 replace:
     '[\\/]': _
     ^\.: _
@@ -28,7 +38,7 @@ replace:
 
 album_fields:
     format_name_probably: |
-        if items[0].format in ("mp3", "Mp3", "MP3"):
+        if items[0].format in ("mp3", "Mp3", "mP3", "MP3"):
             total_bitrate = 0
             for item in items:
                 total_bitrate += item.bitrate
@@ -54,13 +64,9 @@ paths:
     comp: Various Artists/$album ($year) [%if{$bitdepth,$format,$format $format_name_probably}]/$track. $artist - $title
 
 zero:
-    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory images art
+    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres rg_track_gain rg_album_gain rg_track_peak rg_album_peak images art
+    update_database: true
 
 bandcamp:
     lyrics: true
     art: false
-
-hook:
-  hooks:
-    - event: write
-      command: echo Writingï¼ {item}
