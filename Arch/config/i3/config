@@ -134,9 +134,10 @@ bindsym $mod+r mode "resize"
 ###########
 
 #STARTUP
-exec_always --no-startup-id bash /home/toad/.wallpapers/wp_init.sh
+exec --no-startup-id wal -R
 exec --no-startup-id mpd
-exec --no-startup-id mpdscribble
+exec --no-startup-id mpDris2
+#exec --no-startup-id mpdscribble
 exec --no-startup-id compton -b
 
 #GAPS
@@ -149,7 +150,7 @@ for_window [class="VirtualBox" instance="VirtualBox"] floating enable
 
 #COLORS
 set_from_resource $bg i3wm.color0 #000000
-set_from_resource $fg i3wm.color4 #ffffff
+set_from_resource $fg i3wm.color1 #ffffff
 
 #THEME
 client.unfocused $bg $bg $fg $bg
@@ -165,7 +166,7 @@ bindsym XF86AudioNext exec "mpc -q next"
 bindsym XF86AudioPrev exec "mpc -q prev"
 bindsym $mod+Return exec urxvt
 bindsym $mod+d exec rofi -show run
-bindsym $mod+Shift+b exec chromium
+bindsym $mod+Shift+b exec firefox
 
 #BAR
 bar {
@@ -179,6 +180,6 @@ bar {
 		urgent_workspace $fg $fg $bg
 	}
 	position top
-	status_command py3status -c ~/.config/i3/i3status.conf
+	status_command i3status-rs ~/.config/i3/i3status-rs.toml
 	font pango: ypn envypn 10
 }
