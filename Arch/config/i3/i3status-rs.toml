@@ -1,0 +1,59 @@
+icons = "awesome"
+
+[theme]
+name = "solarized-dark"
+[theme.overrides]
+idle_bg 		= "#0c0906" ###base03
+idle_fg 		= "#A04F27" ###base1
+info_bg 		= "#A04F27" 		 ###blue
+info_fg 		= "#0c0906" ###base03
+good_bg 		= "#A04F27"		 ###green
+good_fg 		= "#0c0906" ###base03
+warning_bg 		= "#A04F27" 		 ###yellow
+warning_fg 		= "#0c0906" ###base03
+critical_bg 	= "#A04F27" 		 ###red
+critical_fg 	= "#0c0906" ###base03
+separator_bg 	= "auto"
+separator_fg 	= "auto"
+alternating_tint_bg = "#0c0906"
+alternating_tint_fg = "#0c0906"
+
+[[block]]
+block = "music"
+buttons = ["prev", "play", "next"]
+marquee_interval = 5
+marquee_speed = 0.2
+max_width = 50
+
+[[block]]
+block = "net"
+device = "wlp3s0b1"
+ssid = true
+speed_up = false
+speed_down = false
+interval = 1
+
+[[block]]
+block = "battery"
+device = "/sys/class/power_supply/BAT1"
+interval = 10
+format = "{percentage}% {time}"
+
+[[block]]
+block = "memory"
+display_type = "memory"
+format_mem = "{Mup}%"
+format_swap = "{SUp}%"
+
+[[block]]
+block = "cpu"
+interval = 1
+
+[[block]]
+block = "sound"
+
+[[block]]
+block = "time"
+interval = 1
+format = "%d.%m.%Y %r"
+
