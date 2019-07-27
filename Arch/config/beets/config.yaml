@@ -1,4 +1,4 @@
-plugins: lyrics missing zero bandcamp discogs inline hook duplicates permissions badfiles
+plugins: lyrics missing zero bandcamp discogs inline hook duplicates permissions
 
 directory: /mnt/honeycrisp/Music/PreAlbums
 
@@ -58,9 +58,11 @@ paths:
     comp: Various Artists/$album ($year) [%if{$bitdepth,$format,$format $format_name_probably}]/$track. $artist - $title
 
 zero:
-    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres rg_track_gain rg_album_gain rg_track_peak rg_album_peak images art
+    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres images art
+    # keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres rg_track_gain rg_album_gain rg_track_peak rg_album_peak images art
     update_database: true
 
 bandcamp:
     lyrics: true
     art: false
+
