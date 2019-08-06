@@ -1,4 +1,4 @@
-plugins: lyrics missing zero bandcamp discogs inline hook duplicates permissions
+plugins: lyrics missing zero bandcamp discogs inline hook duplicates
 
 directory: /mnt/honeycrisp/Music/PreAlbums
 
@@ -16,10 +16,6 @@ threaded: yes
 timeout: 5.0
 
 original_date: yes
-
-permissions:
-    file: 644
-    dir: 755
 
 replace:
     '[\\/]': _
