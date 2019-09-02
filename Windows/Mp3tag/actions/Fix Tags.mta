@@ -3,7 +3,7 @@ T=6
 
 [#1]
 T=9
-F=Genre;Genres;Album Artists;Album Artist;Disc;DiscTotal;Copyright;Description;Tracktotal;Comment;Band;BPM;Comment iTunNorm;Comment iTunPGap;Comment iTunSMPB;Compatible_Brands;Compilation;Composer;Encoded By;EncodedBy;EncoderSettings;Encoding Time;EncodingTime;iTunNorm;iTunSMPB;Major_Brand;Minor_Version;Release Time;Software;TotalTracks;UnsyncedLyrics
+F=Album Artists;Album Artist;Disc;DiscTotal;Copyright;Description;Tracktotal;Comment;Band;BPM;Comment iTunNorm;Comment iTunPGap;Comment iTunSMPB;Compatible_Brands;Compilation;Composer;Encoded By;EncodedBy;EncoderSettings;Encoding Time;EncodingTime;iTunNorm;iTunSMPB;Major_Brand;Minor_Version;Release Time;Software;TotalTracks;UnsyncedLyrics;Publisher;ISRC
 
 [#2]
 T=2
