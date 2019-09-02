@@ -108,6 +108,12 @@ do
               replace "\\\"" "&quot;"
 	      replace "?uo=4" ""
 
+	outputto "GENRE"
+	FindLine "\"primaryGenreName\":\""
+	FindInLine "\"primaryGenreName\":\""
+	SayUntil "\""
+	Say "|"
+	
 	outputto "ITUNESADVISORY"
 	replace "notExplicit" "0"
 	replace "cleaned" "2"
