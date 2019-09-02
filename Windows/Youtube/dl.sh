@@ -6,13 +6,22 @@ urls="
 `#Luke Smith` https://www.youtube.com/channel/UC2eYFnH61tmytImy1mTYvhA
 `#Modern Rogue` https://www.youtube.com/channel/UC42VsoDtra5hMiXZSsD6eGg
 `#Boys Only Club` https://www.youtube.com/channel/UCs3snA6GNU9HjV8ejeC0ISA
+`#Reid Stefan` https://www.youtube.com/user/reidiculousremix
 `#u m a m i` https://www.youtube.com/channel/UCqrrxZeeFSNCjGmD-33SKMw
 `#Gus Johnson` https://www.youtube.com/user/gustoonz
+`#Anything4views` https://www.youtube.com/channel/UCfbnTUxUech4P1XgYUwYuKA
 `#N-O-D-E` https://www.youtube.com/channel/UCvrLvII5oxSWEMEkszrxXEA
 `#88rising` https://www.youtube.com/channel/UCZW5lIUz93q_aZIkJPAC0IQ
+`#Haywyre` https://www.youtube.com/channel/UCxGKfJ-Xf8lgdX9PC00YMrA
+`#Indy Mogul` https://www.youtube.com/user/indymogul
 `#H3 Podcast` https://www.youtube.com/channel/UCLtREJY21xRfCuEKvdki1Kw
+`#Cherdleys` https://www.youtube.com/channel/UCPHeAtHSXnymNh8b_Kkj2rw
+`#Legit1` https://www.youtube.com/channel/UCOFBztT7yof1c_4HPL-MFMg
+`#Simon The Magpie` https://www.youtube.com/channel/UCnbfRvqQcfw3eL71HfjROOQ
 `#Oats` https://www.youtube.com/channel/UCD4ZEYIBnHIC2DUhiizMOHg
 `#flooperino` https://www.youtube.com/user/F10opy
+`#soph` https://www.youtube.com/channel/UCT7BLBDnD-wEXeqZSg24aJw
+`#JENNY DEATH. PIRATE.` https://www.youtube.com/channel/UCdMMqTvIbzIuoDI2nI7IbGw
 `#Cody Ko` https://www.youtube.com/user/codyko69
 `#Noel Miller` https://www.youtube.com/channel/UCuTQDPUE12sy7g1xf1LAdTA
 `#Druaga1` https://www.youtube.com/user/Druaga1
