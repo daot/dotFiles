@@ -1,6 +1,6 @@
 plugins: lyrics missing zero bandcamp discogs inline hook duplicates
 
-directory: /mnt/honeycrisp/Music/PreAlbums
+directory: /mnt/e/Artists
 
 import:
     write: yes
@@ -14,6 +14,9 @@ ignore: [".*", "*~", "System Volume Information"]
 threaded: yes
 
 timeout: 5.0
+
+match:
+    strong_rec_thresh: 0.10
 
 original_date: yes
 
@@ -49,9 +52,9 @@ album_fields:
             return items[0].format
 
 paths:
-    default: $albumartist/$album ($year) [%if{$bitdepth,$format,$format $format_name_probably}]/$track. $title
-    singleton:  $albumartist/$title ($year) [%if{$bitdepth,$format,$format $format_name_probably}]/$title
-    comp: Various Artists/$album ($year) [%if{$bitdepth,$format,$format $format_name_probably}]/$track. $artist - $title
+    default: $albumartist/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $title
+    singleton:  $albumartist/$title ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$title
+    comp: Various Artists/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $artist - $title
 
 zero:
     keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres images art
@@ -61,4 +64,3 @@ zero:
 bandcamp:
     lyrics: true
     art: false
-
