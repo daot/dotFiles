@@ -1,9 +1,9 @@
-﻿[#0]
+[#0]
 T=6
 
 [#1]
-T=9
-F=Album Artists;Album Artist;Disc;DiscTotal;Copyright;Description;Tracktotal;Comment;Band;BPM;Comment iTunNorm;Comment iTunPGap;Comment iTunSMPB;Compatible_Brands;Compilation;Composer;Encoded By;EncodedBy;EncoderSettings;Encoding Time;EncodingTime;iTunNorm;iTunSMPB;Major_Brand;Minor_Version;Release Time;Software;TotalTracks;UnsyncedLyrics;Publisher;ISRC
+T=10
+F=PICTURE;ALBUM;ALBUMARTIST;ARTIST;DISCNUMBER;GENRE;ITUNESADVISORY;LYRICS;TITLE;TRACK;YEAR
 
 [#2]
 T=2
