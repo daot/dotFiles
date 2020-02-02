@@ -31,7 +31,7 @@ replace:
 
 album_fields:
     format_name_probably: |
-        if items[0].format in ("mp3", "Mp3", "mP3", "MP3"):
+        if items[0].format.upper() == "MP3":
             total_bitrate = 0
             for item in items:
                 total_bitrate += item.bitrate
