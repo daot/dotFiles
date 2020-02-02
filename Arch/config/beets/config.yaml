@@ -1,6 +1,6 @@
 plugins: lyrics missing zero bandcamp discogs inline hook duplicates
 
-directory: /mnt/e/Artists
+directory: /mnt/e/Artists/
 
 import:
     write: yes
@@ -50,11 +50,13 @@ album_fields:
                 return "TOO LOW FIND NEW SOURCE"
         else:
             return items[0].format
+    first_letter: |
+        return items[0].artist[0].upper()
 
 paths:
-    default: $albumartist/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $title
-    singleton:  $albumartist/$title ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$title
-    comp: Various Artists/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $artist - $title
+    default: $first_letter/$albumartist/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $title
+    singleton:  $first_letter/$albumartist/$title ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$title
+    comp: V/Various Artists/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $artist - $title
 
 zero:
     keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres images art
