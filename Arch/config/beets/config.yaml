@@ -1,4 +1,4 @@
-plugins: lyrics missing zero bandcamp discogs inline hook duplicates
+plugins: lyrics missing zero bandcamp discogs inline duplicates hook
 
 directory: /mnt/e/Artists/
 
@@ -22,12 +22,18 @@ original_date: yes
 
 replace:
     '[\\/]': _
-    ^\.: _
+    '^\.': _
     '[\x00-\x1f]': _
     '[<>:"\?\*\|]': _
-    \.$: _
-    \s+$: ''
-    ^\s+: ''
+    '\.$': _
+    '\s+$': ''
+    '^\s+': ''
+    '^-': _
+
+hook:
+    hooks:
+        - event: album_imported
+          command: python3 /mnt/d/Audio/mov.py {album.path}
 
 album_fields:
     format_name_probably: |
@@ -51,12 +57,18 @@ album_fields:
         else:
             return items[0].format
     first_letter: |
-        return items[0].artist[0].upper()
+        import re
+        if re.match("[0-9]", items[0].albumartist[0]):
+            return "#"
+        elif re.match("[^\w]", items[0].albumartist[0]):
+            return "$"
+        else:
+            return items[0].albumartist[0].upper()
 
 paths:
     default: $first_letter/$albumartist/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $title
     singleton:  $first_letter/$albumartist/$title ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$title
-    comp: V/Various Artists/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $artist - $title
+    comp: VA/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $artist - $title
 
 zero:
     keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres images art
