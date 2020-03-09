@@ -34,6 +34,16 @@ hook:
     hooks:
         - event: album_imported
           command: python3 /mnt/d/Audio/mov.py {album.path}
+          
+item_fields:
+    first_letter: |
+        import re
+        if re.match("[0-9]", albumartist[0]):
+            return "#"
+        elif re.match("[^\w]", albumartist[0]):
+            return "$"
+        else:
+            return albumartist[0].upper()
 
 album_fields:
     format_name_probably: |
@@ -56,14 +66,6 @@ album_fields:
                 return "TOO LOW FIND NEW SOURCE"
         else:
             return items[0].format
-    first_letter: |
-        import re
-        if re.match("[0-9]", items[0].albumartist[0]):
-            return "#"
-        elif re.match("[^\w]", items[0].albumartist[0]):
-            return "$"
-        else:
-            return items[0].albumartist[0].upper()
 
 paths:
     default: $first_letter/$albumartist/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $title
