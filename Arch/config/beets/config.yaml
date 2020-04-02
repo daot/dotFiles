@@ -1,4 +1,4 @@
-plugins: lyrics missing zero bandcamp discogs inline duplicates hook
+plugins: lyrics missing zero bandcamp discogs inline duplicates hook mbsubmit
 
 directory: /mnt/e/Artists/
 
@@ -9,26 +9,10 @@ import:
 
 clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", ".pls", "*.jpg", "*.png"]
 
-ignore: [".*", "*~", "System Volume Information"]
-
-threaded: yes
-
-timeout: 5.0
-
 match:
     strong_rec_thresh: 0.10
 
 original_date: yes
-
-replace:
-    '[\\/]': _
-    '^\.': _
-    '[\x00-\x1f]': _
-    '[<>:"\?\*\|]': _
-    '\.$': _
-    '\s+$': ''
-    '^\s+': ''
-    '^-': _
 
 hook:
     hooks:
@@ -68,9 +52,9 @@ album_fields:
             return items[0].format
 
 paths:
-    default: $first_letter/$albumartist/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $title
-    singleton:  $first_letter/$albumartist/$title ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$title
-    comp: VA/$album ($year) [%if{$bitdepth,$bitdepth-Bit $format,$format $format_name_probably}]/$track. $artist - $title
+    default: $first_letter/$albumartist/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate]/$track. $title
+    singleton:  $first_letter/$albumartist/$title ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate]/$title
+    comp: VA/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate]/$track. $artist - $title
 
 zero:
     keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres images art
