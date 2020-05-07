@@ -1,33 +1,115 @@
-plugins: lyrics missing zero bandcamp discogs inline duplicates hook mbsubmit
-
+### Global Options
 directory: /mnt/e/Artists/
+plugins:
+    # Autotagger Extensions
+    - fromfilename
+    - zero
+    # Metadata Plugins
+    - lyrics
+    - lastgenre
+    - mbsync
+    - bandcamp
+    #- discogs
+    - mbsubmit
+    # Path Format Plugins
+    - bucket
+    - inline
+    # Interoperability
+    - badfiles
+    # Miscellaneous Plugins
+    - info
+    - missing
+    - duplicates
+    # Other/External Plugins
+    - hook
 
+threaded: yes
+
+per_disc_numbering: true
+
+# General Configuration
 import:
     write: yes
     copy: no
     move: yes
-
-clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", ".pls", "*.jpg", "*.png"]
-
+    
 match:
     strong_rec_thresh: 0.10
+    preferred:
+        countries: ['US', 'GB|UK']
+        media: ['CD', 'Digital Media|File', 'Vinyl']
+        original_year: yes
 
 original_date: yes
+
+paths:
+    default: %bucket{$albumartist}/$albumartist/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/%if{$multidisc,Disc $disc/}$track. $title
+    singleton: %bucket{$artist}/$artist/$title ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/$title
+    comp: VA/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/%if{$multidisc,Disc $disc/}$track. $artist - $title
+
+bucket:
+    bucket_alpha:
+    - '#-!'
+    - '0-9'
+    - 'A'
+    - 'B'
+    - 'C'
+    - 'D'
+    - 'E'
+    - 'F'
+    - 'G'
+    - 'H'
+    - 'I'
+    - 'J'
+    - 'K'
+    - 'L'
+    - 'M'
+    - 'N'
+    - 'O'
+    - 'P'
+    - 'Q'
+    - 'R'
+    - 'S'
+    - 'T'
+    - 'U'
+    - 'V'
+    - 'W'
+    - 'X'
+    - 'Y'
+    - 'Z'
+    bucket_alpha_regex:
+        '#-!': ^[^0-9a-zA-Z]
+    bucket_year: []
+    extrapolate: no
+
+clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", "*.m3u8", "*.sfv", ".pls"]
+
+lastgenre:
+    count: 5
+
+item_fields:
+    multidisc: 1 if disctotal > 1 else 0
+    hasmedia: 1 if media in ['12" Vinyl', '7" Vinyl', 'Vinyl', 'Cassette', 'Digital Media', 'CD', 'SACD', 'Hybrid SACD'] else 0
+    mediatype: |
+        mediaList = {
+            '12" Vinyl': "Vinyl",
+            '7" Vinyl': "Vinyl",
+            "Vinyl": "Vinyl",
+            "Cassette": "Cassette",
+            "Digital Media": "WEB",
+            "CD": "CD",
+            "SACD": "SACD",
+            "Hybrid SACD": "SACD",
+        }
+        try:
+            return mediaList[media]
+        except KeyError:
+            return ""
 
 hook:
     hooks:
         - event: album_imported
           command: python3 /mnt/d/Audio/mov.py {album.path}
-          
-item_fields:
-    first_letter: |
-        import re
-        if re.match("[0-9]", albumartist[0]):
-            return "#"
-        elif re.match("[^\w]", albumartist[0]):
-            return "$"
-        else:
-            return albumartist[0].upper()
 
 album_fields:
     format_name_probably: |
@@ -38,26 +120,21 @@ album_fields:
             average_bitrate = total_bitrate / len(items) / 1000
             if average_bitrate == 320:
                 return "320"
-            elif average_bitrate >= 200:
-                return "V0"
             elif average_bitrate == 192:
                 return "192"
             elif average_bitrate == 160:
                 return "160"
             elif average_bitrate == 128:
                 return "128"
+            elif average_bitrate >= 200:
+                return "V0"
             else:
                 return "TOO LOW FIND NEW SOURCE"
         else:
             return items[0].format
 
-paths:
-    default: $first_letter/$albumartist/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate]/$track. $title
-    singleton:  $first_letter/$albumartist/$title ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate]/$title
-    comp: VA/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate]/$track. $artist - $title
-
 zero:
-    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres images art
+    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres mb_trackid mb_albumid mb_artistid mb_albumartistid mb_releasegroupid images art
     # keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres rg_track_gain rg_album_gain rg_track_peak rg_album_peak images art
     update_database: true
 
