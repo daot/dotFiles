@@ -43,8 +43,8 @@ match:
 original_date: yes
 
 paths:
-    default: %bucket{$albumartist}/$albumartist/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/%if{$multidisc,Disc $disc/}$track. $title
-    singleton: %bucket{$artist}/$artist/$title ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/$title
+    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/%if{$multidisc,Disc $disc/}$track. $title
+    singleton: %bucket{$artist,alpha}/$artist/$title ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/$title
     comp: VA/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/%if{$multidisc,Disc $disc/}$track. $artist - $title
 
 bucket:
