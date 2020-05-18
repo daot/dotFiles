@@ -21,7 +21,7 @@ plugins:
     - missing
     - duplicates
     # Other/External Plugins
-    - hook
+    - extrafiles
 
 threaded: yes
 
@@ -43,9 +43,9 @@ match:
 original_date: yes
 
 paths:
-    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/%if{$multidisc,Disc $disc/}$track. $title
-    singleton: %bucket{$artist,alpha}/$artist/$title ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/$title
-    comp: VA/$album ($year) [$format - %if{$bitdepth,$bitdepth,$format_name_probably} - $samplerate] %if{$mediatype,[$mediatype]} %if{$catalognum,{$catalognum$}}/%if{$multidisc,Disc $disc/}$track. $artist - $title
+    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year) [$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$mediatype,[$mediatype]} %if{$bettercatalognum,{$bettercatalognum$}}/%if{$multidisc,Disc $disc/}$track. $title
+    singleton: %bucket{$artist,alpha}/$artist/$title ($year) [$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$mediatype,[$mediatype]} %if{$bettercatalognum,{$bettercatalognum$}}/$title
+    comp: VA/$album ($year) [$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$mediatype,[$mediatype]} %if{$bettercatalognum,{$bettercatalognum$}}/%if{$multidisc,Disc $disc/}$track. $artist - $title
 
 bucket:
     bucket_alpha:
@@ -84,12 +84,37 @@ bucket:
 
 clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", "*.m3u8", "*.sfv", ".pls"]
 
+extrafiles:
+    patterns:
+        artworkdir: 
+          - '[aA]rtwork/'
+          - '[aA]rtworks/'
+          - '[aA]rt/'
+          - '[cC]overs/'
+        scansdir:
+          - '[sS]cans/'
+        artworkfiles:
+          - '*.[pP][nN][gG]'
+          - '*.[jJ][pP][gG]'
+          - '*.[jJ][pP][eE][gG]'
+          - '*.[gG][iI][fF]'
+          - '*.[pP][dD][fF]'
+        everythingelse:
+          - '*.*'
+          - '*/*.*'
+          - '*/*/*.*'
+          - '*/*/*/*.*'
+    paths:
+        artworkdir: $albumpath/Artwork
+        scansdir: $albumpath/Scans
+        artworkfiles: $albumpath/Artwork/$filename
+        everythingelse: $albumpath/$filename
+
 lastgenre:
     count: 5
 
-item_fields:
+album_fields:
     multidisc: 1 if disctotal > 1 else 0
-    hasmedia: 1 if media in ['12" Vinyl', '7" Vinyl', 'Vinyl', 'Cassette', 'Digital Media', 'CD', 'SACD', 'Hybrid SACD'] else 0
     mediatype: |
         mediaList = {
             '12" Vinyl': "Vinyl",
@@ -102,17 +127,31 @@ item_fields:
             "Hybrid SACD": "SACD",
         }
         try:
-            return mediaList[media]
+            return mediaList[items[0].media]
         except KeyError:
             return ""
-
-hook:
-    hooks:
-        - event: album_imported
-          command: python3 /mnt/d/Audio/mov.py {album.path}
-
-album_fields:
-    format_name_probably: |
+    bitdepthmost: |
+        bitdepths = dict()
+        for item in items:
+            try:
+                bitdepths[item.bitdepth] += 1
+            except KeyError:
+                bitdepths[item.bitdepth] = 1
+        sorted_depths = {k: v for k, v in sorted(bitdepths.items(), key=lambda item: item[1])}
+        return list(sorted_depths)[-1]
+    sampleratemost: |
+        samplerates = dict()
+        for item in items:
+            try:
+                samplerates[item.samplerate] += 1
+            except KeyError:
+                samplerates[item.samplerate] = 1
+        sorted_rates = {k: v for k, v in sorted(samplerates.items(), key=lambda item: item[1])}
+        formatted_num = int(list(sorted_rates)[-1]/1000) if int(list(sorted_rates)[-1]/1000) == float(list(sorted_rates)[-1]/1000) else float(list(sorted_rates)[-1]/1000)
+        return str(formatted_num) + "kHz"
+    bettercatalognum: |
+        return items[0].catalognum if items[0].catalognum != "[none]" else ""
+    mp3_quality: |
         if items[0].format.upper() == "MP3":
             total_bitrate = 0
             for item in items:
