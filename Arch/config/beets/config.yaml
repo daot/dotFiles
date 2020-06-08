@@ -43,9 +43,9 @@ match:
 original_date: yes
 
 paths:
-    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year) [$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$mediatype,[$mediatype]} %if{$bettercatalognum,{$bettercatalognum$}}/%if{$multidisc,Disc $disc/}$track. $title
-    singleton: %bucket{$artist,alpha}/$artist/$title ($year) [$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$mediatype,[$mediatype]} %if{$bettercatalognum,{$bettercatalognum$}}/$title
-    comp: VA/$album ($year) [$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$mediatype,[$mediatype]} %if{$bettercatalognum,{$bettercatalognum$}}/%if{$multidisc,Disc $disc/}$track. $artist - $title
+    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/%if{$multidisc,Disc $disc/}$track. $title
+    singleton: %bucket{$artist,alpha}/$artist/$title ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/$title
+    comp: VA/$album ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/%if{$multidisc,Disc $disc/}$track. $artist - $title
 
 bucket:
     bucket_alpha:
@@ -86,19 +86,13 @@ clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", "*.m3u8", "*.sfv", ".pls"]
 
 extrafiles:
     patterns:
-        artworkdir: 
+        artworkdir:
           - '[aA]rtwork/'
           - '[aA]rtworks/'
           - '[aA]rt/'
           - '[cC]overs/'
         scansdir:
           - '[sS]cans/'
-        artworkfiles:
-          - '*.[pP][nN][gG]'
-          - '*.[jJ][pP][gG]'
-          - '*.[jJ][pP][eE][gG]'
-          - '*.[gG][iI][fF]'
-          - '*.[pP][dD][fF]'
         everythingelse:
           - '*.*'
           - '*/*.*'
@@ -107,7 +101,6 @@ extrafiles:
     paths:
         artworkdir: $albumpath/Artwork
         scansdir: $albumpath/Scans
-        artworkfiles: $albumpath/Artwork/$filename
         everythingelse: $albumpath/$filename
 
 lastgenre:
@@ -119,17 +112,12 @@ album_fields:
         mediaList = {
             '12" Vinyl': "Vinyl",
             '7" Vinyl': "Vinyl",
-            "Vinyl": "Vinyl",
-            "Cassette": "Cassette",
             "Digital Media": "WEB",
-            "CD": "CD",
-            "SACD": "SACD",
-            "Hybrid SACD": "SACD",
         }
         try:
             return mediaList[items[0].media]
         except KeyError:
-            return ""
+            return items[0].media
     bitdepthmost: |
         bitdepths = dict()
         for item in items:
