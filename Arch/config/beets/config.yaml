@@ -115,7 +115,6 @@ lastgenre:
     count: 5
 
 album_fields:
-    multidisc: 1 if disctotal > 1 else 0
     mediatype: |
         mediaList = {
             '12" Vinyl': "Vinyl",
