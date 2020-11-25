@@ -1,5 +1,5 @@
 ### Global Options
-directory: /mnt/e/Artists/
+directory: E:\Artists\
 plugins:
     # Autotagger Extensions
     - fromfilename
@@ -22,6 +22,7 @@ plugins:
     - duplicates
     # Other/External Plugins
     - extrafiles
+    - mbsubmit
 
 threaded: yes
 
@@ -32,6 +33,10 @@ import:
     write: yes
     copy: no
     move: yes
+    timid: yes
+    
+ui:
+    color: no
     
 match:
     strong_rec_thresh: 0.10
@@ -43,9 +48,9 @@ match:
 original_date: yes
 
 paths:
-    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/%if{$multidisc,Disc $disc/}$track. $title
+    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/$disc-$track. $title
     singleton: %bucket{$artist,alpha}/$artist/$title ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/$title
-    comp: VA/$album ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/%if{$multidisc,Disc $disc/}$track. $artist - $title
+    comp: VA/$album ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/$disc-$track. $artist - $title
 
 bucket:
     bucket_alpha:
@@ -93,6 +98,8 @@ extrafiles:
           - '[cC]overs/'
         scansdir:
           - '[sS]cans/'
+        extradir:
+          - '[eE]xtra/'
         everythingelse:
           - '*.*'
           - '*/*.*'
@@ -101,6 +108,7 @@ extrafiles:
     paths:
         artworkdir: $albumpath/Artwork
         scansdir: $albumpath/Scans
+        extradir: $albumpath/Extra
         everythingelse: $albumpath/$filename
 
 lastgenre:
@@ -161,8 +169,7 @@ album_fields:
             return items[0].format
 
 zero:
-    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres mb_trackid mb_albumid mb_artistid mb_albumartistid mb_releasegroupid images art
-    # keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres rg_track_gain rg_album_gain rg_track_peak rg_album_peak images art
+    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres mb_trackid mb_albumid mb_artistid mb_albumartistid mb_releasegroupid
     update_database: true
 
 bandcamp:
