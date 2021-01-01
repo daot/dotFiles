@@ -3,7 +3,6 @@ directory: E:\Artists\
 plugins:
     # Autotagger Extensions
     - fromfilename
-    - zero
     # Metadata Plugins
     - lyrics
     - lastgenre
@@ -33,8 +32,8 @@ import:
     write: yes
     copy: no
     move: yes
-    timid: yes
-    
+    timid: yes    
+
 ui:
     color: no
     
@@ -166,10 +165,6 @@ album_fields:
                 return "TOO LOW FIND NEW SOURCE"
         else:
             return items[0].format
-
-zero:
-    keep_fields: title artist album albumartist year track disc lyrics itunesadvisory genre genres mb_trackid mb_albumid mb_artistid mb_albumartistid mb_releasegroupid
-    update_database: true
 
 bandcamp:
     lyrics: true
