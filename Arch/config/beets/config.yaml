@@ -1,13 +1,12 @@
 ### Global Options
-directory: E:\Artists\
+directory: G:\Artists
 plugins:
     # Autotagger Extensions
     - fromfilename
     # Metadata Plugins
-    - lyrics
+    #- lyrics
     - lastgenre
     - mbsync
-    - bandcamp
     #- discogs
     - mbsubmit
     # Path Format Plugins
@@ -32,7 +31,7 @@ import:
     write: yes
     copy: no
     move: yes
-    timid: yes    
+    timid: yes
 
 ui:
     color: no
@@ -165,7 +164,3 @@ album_fields:
                 return "TOO LOW FIND NEW SOURCE"
         else:
             return items[0].format
-
-bandcamp:
-    lyrics: true
-    art: false
