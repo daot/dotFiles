@@ -35,53 +35,53 @@ import:
 
 ui:
     color: no
-    
+
 match:
     strong_rec_thresh: 0.10
     preferred:
-        countries: ['US', 'GB|UK']
-        media: ['CD', 'Digital Media|File', 'Vinyl']
+        countries: ["US", "GB|UK"]
+        media: ["CD", "Digital Media|File", "Vinyl"]
         original_year: yes
 
 original_date: yes
 
 paths:
-    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/$disc-$track. $title
-    singleton: %bucket{$artist,alpha}/$artist/$title ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/$title
-    comp: VA/$album ($year) [%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost] %if{$bettercatalognum,{$bettercatalognum$}}/$disc-$track. $artist - $title
+    default: %bucket{$albumartist,alpha}/$albumartist/$album ($year)%if{$bettercatalognum, {$bettercatalognum$}} [%if{$iscd,$mediatype - $logpercent - $format,%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost}]/$disc-$track. $title
+    singleton: %bucket{$artist,alpha}/$artist/$title ($year)%if{$bettercatalognum, {$bettercatalognum$}} [%if{$iscd,$mediatype - $logpercent - $format,%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost}]/$title
+    comp: VA/$album ($year)%if{$bettercatalognum, {$bettercatalognum$}} [%if{$iscd,$mediatype - $logpercent - $format,%if{$mediatype,$mediatype - }$format - %if{$bitdepth,$bitdepthmost,$mp3_quality} - $sampleratemost}]/$disc-$track. $artist - $title
 
 bucket:
     bucket_alpha:
-    - '#-!'
-    - '0-9'
-    - 'A'
-    - 'B'
-    - 'C'
-    - 'D'
-    - 'E'
-    - 'F'
-    - 'G'
-    - 'H'
-    - 'I'
-    - 'J'
-    - 'K'
-    - 'L'
-    - 'M'
-    - 'N'
-    - 'O'
-    - 'P'
-    - 'Q'
-    - 'R'
-    - 'S'
-    - 'T'
-    - 'U'
-    - 'V'
-    - 'W'
-    - 'X'
-    - 'Y'
-    - 'Z'
+        - "#-!"
+        - "0-9"
+        - "A"
+        - "B"
+        - "C"
+        - "D"
+        - "E"
+        - "F"
+        - "G"
+        - "H"
+        - "I"
+        - "J"
+        - "K"
+        - "L"
+        - "M"
+        - "N"
+        - "O"
+        - "P"
+        - "Q"
+        - "R"
+        - "S"
+        - "T"
+        - "U"
+        - "V"
+        - "W"
+        - "X"
+        - "Y"
+        - "Z"
     bucket_alpha_regex:
-        '#-!': ^[^0-9a-zA-Z]
+        "#-!": ^[^0-9a-zA-Z]
     bucket_year: []
     extrapolate: no
 
@@ -90,19 +90,19 @@ clutter: ["Thumbs.DB", ".DS_Store", "*.m3u", "*.m3u8", "*.sfv", ".pls"]
 extrafiles:
     patterns:
         artworkdir:
-          - '[aA]rtwork/'
-          - '[aA]rtworks/'
-          - '[aA]rt/'
-          - '[cC]overs/'
+            - "[aA]rtwork/"
+            - "[aA]rtworks/"
+            - "[aA]rt/"
+            - "[cC]overs/"
         scansdir:
-          - '[sS]cans/'
+            - "[sS]cans/"
         extradir:
-          - '[eE]xtra/'
+            - "[eE]xtra/"
         everythingelse:
-          - '*.*'
-          - '*/*.*'
-          - '*/*/*.*'
-          - '*/*/*/*.*'
+            - "*.*"
+            - "*/*.*"
+            - "*/*/*.*"
+            - "*/*/*/*.*"
     paths:
         artworkdir: $albumpath/Artwork
         scansdir: $albumpath/Scans
@@ -112,7 +112,52 @@ extrafiles:
 lastgenre:
     count: 5
 
+item_fields:
+    logpercent: |
+        import os
+        import subprocess
+        import tempfile
+
+        # change this path to where you keep logchecker
+        logcheckerpath = "C:/Users/toad/AppData/Roaming/beets/logchecker.phar"
+
+        temp_log = os.path.join(tempfile.gettempdir(), "beetslastlog.txt")
+        if os.path.isfile(temp_log):
+            line = ""
+            with open(temp_log, 'r') as f:
+                line = f.readline()
+            if track >= tracktotal:
+                os.remove(temp_log)
+            return line + "%LOG"
+        else:
+            log_scores = []
+            for root, dirs, files in os.walk(os.path.dirname(path.decode("utf-8"))):
+                for file in files:
+                    if file.endswith(".log"):
+                        log_file = os.path.join(root, file)
+                        proc = subprocess.Popen(
+                            ["php", logcheckerpath, "analyze", "--no_text", log_file],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT,
+                        )
+
+                        log_checker_out = (
+                            proc.communicate()[0].decode("utf-8").replace("\n", "")
+                        )
+                        i_score = log_checker_out.index("Score") + 10
+                        i_check = log_checker_out.index("Checksum:")
+                        sliced_text = slice(i_score, i_check)
+                        log_score = int(log_checker_out[sliced_text].strip())
+
+                        log_scores.append(log_score)
+            score = min(log_scores, default="MISSING")
+            with open(temp_log, 'w') as f:
+                f.write(str(score))
+            return str(score) + "%LOG"
+
 album_fields:
+    iscd: |
+        return "CD" in items[0].media
     mediatype: |
         mediaList = {
             '12" Vinyl': "Vinyl",
